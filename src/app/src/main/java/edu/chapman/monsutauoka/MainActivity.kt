@@ -28,7 +28,8 @@ class MainActivity : AppCompatActivity() {
             setOf(
                 R.id.navigation_alpha,
                 R.id.navigation_beta,
-                R.id.navigation_gamma
+                R.id.navigation_gamma,
+                R.id.navigation_charlie
             )
         )
 

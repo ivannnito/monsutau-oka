@@ -31,4 +31,11 @@
         android:label="@string/title_third"
         tools:layout="@layout/fragment_gamma" />
 
+    <fragment
+        android:id="@+id/navigation_charlie"
+        android:name="edu.chapman.monsutauoka.ui.fourth.CharlieFragment"
+        android:label="Charlie"
+        tools:layout="@layout/fragment_charlie" />
+
+
 </navigation>

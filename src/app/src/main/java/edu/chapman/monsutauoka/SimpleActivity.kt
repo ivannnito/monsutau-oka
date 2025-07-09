@@ -25,5 +25,9 @@ class SimpleActivity : AppCompatActivity() {
         binding.simpleButton2.setOnClickListener {
             binding.simpleTextView.text = getString(R.string._false)
         }
+
+        binding.simpleButton3.setOnClickListener {
+            binding.simpleTextView.text = "i added this"
+        }
     }
 }

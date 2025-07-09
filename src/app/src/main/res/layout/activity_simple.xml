@@ -15,7 +15,7 @@
 
     <LinearLayout
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="208dp"
         android:gravity="center"
         android:orientation="horizontal">
 
@@ -23,15 +23,23 @@
             android:id="@+id/simpleButton1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Yes"
-            android:layout_margin="@dimen/activity_horizontal_margin" />
+            android:layout_margin="@dimen/activity_horizontal_margin"
+            android:text="Yes" />
 
         <Button
             android:id="@+id/simpleButton2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="No"
-            android:layout_margin="@dimen/activity_horizontal_margin" />
+            android:layout_margin="@dimen/activity_horizontal_margin"
+            android:text="No" />
+
+        <Button
+            android:id="@+id/simpleButton3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/activity_horizontal_margin"
+            android:layout_weight="1"
+            android:text="ivan added" />
 
     </LinearLayout>
 
