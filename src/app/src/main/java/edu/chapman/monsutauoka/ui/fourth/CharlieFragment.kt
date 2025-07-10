@@ -30,11 +30,25 @@ class CharlieFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         Log.d(TAG, ::onViewCreated.name)
 
+        // When first load, make our viewmodel text appear
+        binding.textCharlie.text = viewModel.text.value;
+
+        // Android doesn't like this but manually changed oopsies
+        binding.button.text = "Apply text here."
+
         // Here we modify our text
         // Use a ViewModel to update a the TextView
         // from EditText on button click
 
+        // when button is clicked
+        binding.button.setOnClickListener{
+            Log.d(TAG, "Button Pressed")
 
+            // our text value is set to what our user has inputted
+            //viewModel.text.value = viewModel.text.toString()
+            binding.textCharlie.text = binding.editTextText.text
+            Log.d(TAG, "Text updated from Button Pressed")
+        }
 
     }
 
