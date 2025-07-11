@@ -42,12 +42,12 @@ class CharlieFragment : Fragment() {
 
         // when button is clicked
         binding.button.setOnClickListener{
-            Log.d(TAG, "Button Pressed")
+            Log.i(TAG, "Button Pressed")
 
             // our text value is set to what our user has inputted
             //viewModel.text.value = viewModel.text.toString()
             binding.textCharlie.text = binding.editTextText.text
-            Log.d(TAG, "Text updated from Button Pressed")
+            Log.i(TAG, "Text updated from Button Pressed")
         }
 
     }
