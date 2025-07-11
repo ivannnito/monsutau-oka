@@ -29,13 +29,6 @@ class CharlieFragment : Fragment() {
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         Log.d(TAG, ::onViewCreated.name)
-
-        // When first load, make our viewmodel text appear
-        binding.textCharlie.text = viewModel.text.value;
-
-        // Android doesn't like this but manually changed oopsies
-        binding.button.text = "Apply text here."
-
         // Here we modify our text
         // Use a ViewModel to update a the TextView
         // from EditText on button click
@@ -44,11 +37,22 @@ class CharlieFragment : Fragment() {
         binding.button.setOnClickListener{
             Log.i(TAG, "Button Pressed")
 
+            viewModel.text.value = binding.editText.text.toString()
             // our text value is set to what our user has inputted
             //viewModel.text.value = viewModel.text.toString()
-            binding.textCharlie.text = binding.editTextText.text
+
             Log.i(TAG, "Text updated from Button Pressed")
         }
+
+        // saving previous value through our observer
+        viewModel.text.observe(viewLifecycleOwner) { textValue ->
+            Log.i(TAG, "TextValue: " + textValue + "\n" + "Text Changed: " + binding.editText.text)
+            // text isn't changing correctly, changes the EditText attribute instead of the actual
+            // textCharlie attribute? textCharlie doesn't show up unless the viewModel.text has the default value
+            // set to it, instead of the correctly updated binding.textCharlie.text = textValue, textValue is always the default text
+            binding.textCharlie.text = textValue.toString()
+        }
+
 
     }
 

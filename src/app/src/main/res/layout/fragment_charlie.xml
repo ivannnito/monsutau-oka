@@ -14,8 +14,7 @@
         android:layout_marginEnd="200dp"
         android:layout_marginBottom="76dp"
         android:orientation="horizontal"
-        android:text="@string/title_first"
-        app:layout_constraintBottom_toTopOf="@id/editTextText"
+        app:layout_constraintBottom_toTopOf="@id/editText"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.52"
         app:layout_constraintStart_toStartOf="parent"
@@ -31,13 +30,15 @@
         android:layout_marginTop="72dp"
         android:layout_marginEnd="136dp"
         android:layout_marginBottom="271dp"
+        android:text="Apply text"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextText" />
+        app:layout_constraintTop_toBottomOf="@+id/editText"
+        tools:text="Apply text" />
 
     <EditText
-        android:id="@+id/editTextText"
+        android:id="@+id/editText"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="101dp"
