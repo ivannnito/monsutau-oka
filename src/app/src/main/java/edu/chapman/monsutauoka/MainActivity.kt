@@ -1,19 +1,35 @@
 package edu.chapman.monsutauoka
 
+import android.hardware.Sensor
+import android.hardware.SensorManager
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
-import androidx.navigation.findNavController
+import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import edu.chapman.monsutauoka.databinding.ActivityMainBinding
+import edu.chapman.monsutauoka.extensions.TAG
+import android.widget.Toast
+import edu.chapman.monsutauoka.services.sensors.MockStepSensorManager
+import edu.chapman.monsutauoka.services.sensors.RealStepSensorManager
+import edu.chapman.monsutauoka.services.data.SharedPreferencesDataStore
+import edu.chapman.monsutauoka.services.StepCounterService
+import edu.chapman.monsutauoka.services.sensors.StepSensorManager
 
 class MainActivity : AppCompatActivity() {
+    lateinit var stepCounterService: StepCounterService
 
+    private lateinit var stepSensorManager: StepSensorManager
     private lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        Log.i(TAG, "onCreate")
         super.onCreate(savedInstanceState)
+
+        setupSensors()
+        setupStepCounter()
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -21,8 +37,30 @@ class MainActivity : AppCompatActivity() {
         setupNav()
     }
 
+    fun setupSensors() {
+        // We know that we have permissions because the entry activity should have asserted that
+        val sensorManager = getSystemService(SENSOR_SERVICE) as SensorManager
+        val sensor = sensorManager.getDefaultSensor(Sensor.TYPE_STEP_COUNTER)
+
+        if (sensor != null) {
+            stepSensorManager = RealStepSensorManager(this, sensorManager, sensor)
+        } else {
+            Toast.makeText(this, "Using MOCK Step Counter", Toast.LENGTH_SHORT).show()
+            stepSensorManager = MockStepSensorManager(this)
+        }
+    }
+
+    fun setupStepCounter() {
+        val sharedPreferences = getSharedPreferences(this::class.simpleName, MODE_PRIVATE)
+        val dataStore = SharedPreferencesDataStore(sharedPreferences)
+        stepCounterService = StepCounterService(dataStore)
+    }
+
     fun setupNav() {
-        val navController = findNavController(R.id.nav_host_fragment_activity_main)
+        val navHostFragment = supportFragmentManager
+            .findFragmentById(R.id.nav_host_fragment_activity_main) as NavHostFragment
+
+        val navController = navHostFragment.navController
 
         val appBarConfiguration = AppBarConfiguration(
             setOf(
@@ -35,5 +73,22 @@ class MainActivity : AppCompatActivity() {
 
         setupActionBarWithNavController(navController, appBarConfiguration)
         binding.navView.setupWithNavController(navController)
+    }
+
+    override fun onResume() {
+        Log.i(TAG, ::onResume.name)
+        super.onResume()
+        stepSensorManager.onResume()
+    }
+
+    override fun onPause() {
+        Log.i(TAG, ::onPause.name)
+        super.onPause()
+        stepSensorManager.onPause()
+    }
+
+    fun updateSteps(newStepCount: Float) {
+        Log.v(TAG, newStepCount.toString())
+        stepCounterService.updateSteps(newStepCount)
     }
 }

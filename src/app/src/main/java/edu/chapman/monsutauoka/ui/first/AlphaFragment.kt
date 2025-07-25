@@ -5,40 +5,34 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
-import androidx.navigation.fragment.findNavController
-import edu.chapman.monsutauoka.R
+import androidx.fragment.app.viewModels
 import edu.chapman.monsutauoka.databinding.FragmentAlphaBinding
 import edu.chapman.monsutauoka.extensions.TAG
+import edu.chapman.monsutauoka.extensions.applySystemBarPadding
+import edu.chapman.monsutauoka.ui.GenericViewModelFactory
+import edu.chapman.monsutauoka.ui.MainFragmentBase
 
-class AlphaFragment : Fragment() {
+class AlphaFragment : MainFragmentBase<FragmentAlphaBinding>() {
 
-    private var _binding: FragmentAlphaBinding? = null
-    private val binding get() = _binding!!
+    private val viewModel: AlphaViewModel by viewModels {
+        GenericViewModelFactory {
+            AlphaViewModel(mainActivity.stepCounterService)
+        }
+    }
 
-    override fun onCreateView(
+    override fun createViewBinding(
         inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        Log.d(TAG, ::onCreateView.name)
-
-        _binding = FragmentAlphaBinding.inflate(inflater, container, false)
-        return binding.root
+        container: ViewGroup?
+    ): FragmentAlphaBinding {
+        return FragmentAlphaBinding.inflate(inflater, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         Log.d(TAG, ::onViewCreated.name)
+        binding.root.applySystemBarPadding()
 
-        binding.buttonAlpha.setOnClickListener {
-            findNavController().navigate(R.id.action_FirstFragment_to_SecondFragment)
+        viewModel.steps.observe(viewLifecycleOwner) { stepCount ->
+            binding.textSteps.text = stepCount.toString()
         }
-    }
-
-    override fun onDestroyView() {
-        Log.d(TAG, ::onDestroyView.name)
-
-        super.onDestroyView()
-        _binding = null
     }
 }
