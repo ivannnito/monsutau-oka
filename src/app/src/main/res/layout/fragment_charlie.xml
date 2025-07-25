@@ -6,6 +6,22 @@
     android:layout_height="match_parent">
 
     <TextView
+        android:id="@+id/stepCounterText"
+        android:layout_width="97dp"
+        android:layout_height="68dp"
+        android:layout_marginStart="200dp"
+        android:layout_marginTop="196dp"
+        android:layout_marginEnd="200dp"
+        android:layout_marginBottom="76dp"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toTopOf="@id/editText"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.842"
+        tools:text="@string/title_first" />
+
+    <TextView
         android:id="@+id/text_charlie"
         android:layout_width="97dp"
         android:layout_height="68dp"
