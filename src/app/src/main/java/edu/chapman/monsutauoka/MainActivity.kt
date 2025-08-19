@@ -12,6 +12,7 @@ import androidx.navigation.ui.setupWithNavController
 import edu.chapman.monsutauoka.databinding.ActivityMainBinding
 import edu.chapman.monsutauoka.extensions.TAG
 import android.widget.Toast
+import edu.chapman.monsutauoka.services.MoodAndActivity
 import edu.chapman.monsutauoka.services.sensors.MockStepSensorManager
 import edu.chapman.monsutauoka.services.sensors.RealStepSensorManager
 import edu.chapman.monsutauoka.services.data.SharedPreferencesDataStore
@@ -19,14 +20,17 @@ import edu.chapman.monsutauoka.services.StepCounterService
 import edu.chapman.monsutauoka.services.sensors.StepSensorManager
 
 class MainActivity : AppCompatActivity() {
-    private lateinit var stepCounterService: StepCounterService
+    lateinit var stepCounterService: StepCounterService
     private lateinit var stepSensorManager: StepSensorManager
+    lateinit var moodAndActivity: MoodAndActivity
+
     private lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         setupSensors()
+        setupMoodAndActivity()
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -50,6 +54,12 @@ class MainActivity : AppCompatActivity() {
         val sharedPreferences = getSharedPreferences(this::class.simpleName, MODE_PRIVATE)
         val dataStore = SharedPreferencesDataStore(sharedPreferences)
         stepCounterService = StepCounterService(dataStore)
+    }
+
+    fun setupMoodAndActivity() { // Lot of repeat code with setup fix later
+        val sharedPreferences = getSharedPreferences(this::class.simpleName, MODE_PRIVATE)
+        val dataStore = SharedPreferencesDataStore(sharedPreferences)
+        moodAndActivity = MoodAndActivity(dataStore)
     }
 
     fun setupNav() {
