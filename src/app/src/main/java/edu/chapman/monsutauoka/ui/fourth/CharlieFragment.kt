@@ -5,16 +5,12 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import edu.chapman.monsutauoka.MainActivity
-import edu.chapman.monsutauoka.databinding.FragmentAlphaBinding
 import edu.chapman.monsutauoka.databinding.FragmentCharlieBinding
 import edu.chapman.monsutauoka.extensions.TAG
 import edu.chapman.monsutauoka.extensions.applySystemBarPadding
 import edu.chapman.monsutauoka.ui.GenericViewModelFactory
 import edu.chapman.monsutauoka.ui.MainFragmentBase
-import edu.chapman.monsutauoka.ui.first.CharlieViewModel
 
 class CharlieFragment : MainFragmentBase<FragmentCharlieBinding>() {
 
@@ -36,8 +32,14 @@ class CharlieFragment : MainFragmentBase<FragmentCharlieBinding>() {
         binding.root.applySystemBarPadding()
 
         viewModel.steps.observe(viewLifecycleOwner) { stepCount ->
-            binding.textCharlie.text = stepCount.toString()
+            binding.stepAmount.text = stepCount.toString()
         }
+
+        viewModel.sticks.observe(viewLifecycleOwner) { sticks ->
+            binding.sticksAmount.text = sticks.toString()
+
+        }
+
     }
 
 }
