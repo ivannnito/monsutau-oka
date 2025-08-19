@@ -13,6 +13,7 @@ import androidx.navigation.ui.setupWithNavController
 import edu.chapman.monsutauoka.databinding.ActivityMainBinding
 import edu.chapman.monsutauoka.extensions.TAG
 import android.widget.Toast
+import edu.chapman.monsutauoka.services.MoodAndActivity
 import edu.chapman.monsutauoka.services.sensors.MockStepSensorManager
 import edu.chapman.monsutauoka.services.sensors.RealStepSensorManager
 import edu.chapman.monsutauoka.services.data.SharedPreferencesDataStore
@@ -25,12 +26,20 @@ class MainActivity : AppCompatActivity() {
     private lateinit var stepSensorManager: StepSensorManager
     private lateinit var binding: ActivityMainBinding
 
+    lateinit var moodAndActivity: MoodAndActivity
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         Log.i(TAG, "onCreate")
         super.onCreate(savedInstanceState)
 
         setupSensors()
         setupStepCounter()
+        setupMoodAndActivity()
+
+        // Initializing our service locator for our global wallet
+        edu.chapman.monsutauoka.services.data.di.ServiceLocator.init(applicationContext, stepCounterService)
+
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -67,6 +76,12 @@ class MainActivity : AppCompatActivity() {
             Toast.makeText(this, "Using MOCK Step Counter", Toast.LENGTH_SHORT).show()
             stepSensorManager = MockStepSensorManager(this)
         }
+    }
+
+    fun setupMoodAndActivity() { // Lot of repeat code with setup fix later
+        val sharedPreferences = getSharedPreferences(this::class.simpleName, MODE_PRIVATE)
+        val dataStore = SharedPreferencesDataStore(sharedPreferences)
+        moodAndActivity = MoodAndActivity(dataStore)
     }
 
     fun setupStepCounter() {
