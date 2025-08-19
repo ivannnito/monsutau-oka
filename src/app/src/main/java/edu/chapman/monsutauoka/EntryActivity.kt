@@ -17,13 +17,13 @@ class EntryActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityEntryBinding
 
-    @RequiresApi(Build.VERSION_CODES.Q)
+    @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     private val permissions = arrayOf(
         Manifest.permission.ACTIVITY_RECOGNITION,
         Manifest.permission.POST_NOTIFICATIONS,
         Manifest.permission.INTERNET)
 
-    @RequiresApi(Build.VERSION_CODES.Q)
+    @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     override fun onCreate(savedInstanceState: Bundle?) {
         Log.i(TAG, "onCreate")
         super.onCreate(savedInstanceState)
@@ -37,15 +37,18 @@ class EntryActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         binding.buttonContinue.setOnClickListener {
+            Log.i(TAG, "Button was pressed")
             if (hasPermissions) {
+                Log.i(TAG, "Switching to main activity")
                 goToMainActivity()
             } else {
+                Log.w(TAG, "No Permissions!")
                 ActivityCompat.requestPermissions(this, permissions, 0)
             }
         }
     }
 
-    @RequiresApi(Build.VERSION_CODES.Q)
+    @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     override fun onResume() {
         super.onResume()
 
@@ -54,7 +57,7 @@ class EntryActivity : AppCompatActivity() {
         }
     }
 
-    @RequiresApi(Build.VERSION_CODES.Q)
+    @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     override fun onRequestPermissionsResult(
         requestCode: Int,
         permissions: Array<out String>,
@@ -68,7 +71,7 @@ class EntryActivity : AppCompatActivity() {
     }
 
     val hasPermissions : Boolean
-        @RequiresApi(Build.VERSION_CODES.Q)
+        @RequiresApi(Build.VERSION_CODES.TIRAMISU)
         get() {
             permissions.forEach { permission ->
                 val isPermissionGranted = ContextCompat.checkSelfPermission(

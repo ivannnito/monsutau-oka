@@ -20,6 +20,8 @@ class AlphaFragment : MainFragmentBase<FragmentAlphaBinding>() {
         }
     }
 
+
+
     override fun createViewBinding(
         inflater: LayoutInflater,
         container: ViewGroup?

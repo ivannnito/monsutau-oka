@@ -9,7 +9,7 @@ class CharlieViewModel(stepCounterService: StepCounterService) : ViewModel() {
     private var initialized = false
 
     private lateinit var _steps: LiveData<Float>
-    val steps: LiveData<Float> get() = _steps
+    val steps: LiveData<Float> = stepCounterService.steps.asLiveData()
 
     fun initialize(service: StepCounterService) {
         if (initialized) {

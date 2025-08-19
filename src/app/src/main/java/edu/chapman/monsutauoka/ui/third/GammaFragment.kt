@@ -5,49 +5,58 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
+import android.widget.Toast
 import androidx.fragment.app.viewModels
 import edu.chapman.monsutauoka.databinding.FragmentGammaBinding
 import edu.chapman.monsutauoka.extensions.TAG
+import edu.chapman.monsutauoka.ui.GenericViewModelFactory
+import edu.chapman.monsutauoka.ui.MainFragmentBase
 
-class GammaFragment : Fragment() {
+class GammaFragment : MainFragmentBase<FragmentGammaBinding>() {
 
-    private var _binding: FragmentGammaBinding? = null
-    private val binding get() = _binding!!
+    private val viewModel: GammaViewModel by viewModels {
+        GenericViewModelFactory {
+            GammaViewModel()
+        }
+    }
 
-    private val viewModel: GammaViewModel by viewModels()
-
-    override fun onCreateView(
+    override fun createViewBinding(
         inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        Log.d(TAG, ::onCreateView.name)
-
-        _binding = FragmentGammaBinding.inflate(inflater, container, false)
-        return binding.root
+        container: ViewGroup?
+    ): FragmentGammaBinding {
+        return FragmentGammaBinding.inflate(inflater, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        Log.d(TAG, ::onViewCreated.name)
+        super.onViewCreated(view, savedInstanceState)
 
-        binding.buttonDecrement.setOnClickListener {
-            viewModel.num.value--
+        viewModel.text.observe(viewLifecycleOwner) { txt ->
+            if (binding.content.text.toString() != txt) {
+                binding.content.setText(txt)
+                binding.content.setSelection(binding.content.text?.length ?: 0)
+            }
         }
 
-        binding.buttonIncrement.setOnClickListener {
-            viewModel.num.value++
+        viewModel.busy.observe(viewLifecycleOwner) { isBusy ->
+            binding.progress.visibility = if (isBusy) View.VISIBLE else View.GONE
+            binding.save.isEnabled = !isBusy
+            binding.content.isEnabled = !isBusy
         }
 
-        viewModel.num.observe(viewLifecycleOwner) { numValue ->
-            binding.textGamma.text = numValue.toString()
+        viewModel.error.observe(viewLifecycleOwner) { msg ->
+            if (!msg.isNullOrBlank()) {
+                Toast.makeText(requireContext(), msg, Toast.LENGTH_LONG).show()
+            }
+        }
+
+        binding.save.setOnClickListener {
+            viewModel.save(binding.content.text?.toString().orEmpty())
         }
     }
 
-    override fun onDestroyView() {
-        Log.d(TAG, ::onDestroyView.name)
-
-        super.onDestroyView()
-        _binding = null
+    override fun onStart() {
+        Log.d(TAG, ::onStart.name)
+        super.onStart()
+        viewModel.load()
     }
 }
