@@ -35,12 +35,19 @@ class CharlieFragment : MainFragmentBase<FragmentCharlieBinding>() {
             binding.stepAmount.text = stepCount.toString()
         }
 
-        viewModel.sticks.observe(viewLifecycleOwner) { sticks ->
-            binding.sticksAmount.text = sticks.toString()
+        viewModel.sticks.observe(viewLifecycleOwner) { balance ->
+            binding.sticksAmount.text = balance.toString()
+        }
 
+        binding.button.setOnClickListener {
+            val feeding = viewModel.useStick(1)
+            if(!feeding) {
+                Log.d(TAG, "NOT ENOUGH STICKS")
+            }
         }
 
     }
+
 
 }
 
