@@ -5,7 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import edu.chapman.monsutauoka.services.StepCounterService
 
-class AlphaViewModel : ViewModel() {
+class AlphaViewModel(stepCounterService: StepCounterService) : ViewModel() {
     private var initialized = false
 
     private lateinit var _steps: LiveData<Float>

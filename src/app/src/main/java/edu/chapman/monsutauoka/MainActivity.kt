@@ -1,5 +1,6 @@
 package edu.chapman.monsutauoka
 
+import android.content.Intent
 import android.hardware.Sensor
 import android.hardware.SensorManager
 import android.os.Bundle
@@ -19,19 +20,40 @@ import edu.chapman.monsutauoka.services.StepCounterService
 import edu.chapman.monsutauoka.services.sensors.StepSensorManager
 
 class MainActivity : AppCompatActivity() {
-    private lateinit var stepCounterService: StepCounterService
+    lateinit var stepCounterService: StepCounterService
+
     private lateinit var stepSensorManager: StepSensorManager
     private lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        Log.i(TAG, "onCreate")
         super.onCreate(savedInstanceState)
 
         setupSensors()
+        setupStepCounter()
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         setupNav()
+
+        handleNavigationIntent(intent)
+    }
+
+    override fun onNewIntent(intent: Intent?) {
+        Log.i(TAG, "onNewIntent")
+        super.onNewIntent(intent)
+
+        handleNavigationIntent(intent)
+    }
+
+    private fun handleNavigationIntent(intent: Intent?) {
+
+        val hello = intent?.getStringExtra("hello") ?: return
+
+        val index = if (hello == "world") R.id.navigation_gamma else R.id.navigation_beta
+
+        binding.navView.selectedItemId = index
     }
 
     fun setupSensors() {
@@ -45,8 +67,9 @@ class MainActivity : AppCompatActivity() {
             Toast.makeText(this, "Using MOCK Step Counter", Toast.LENGTH_SHORT).show()
             stepSensorManager = MockStepSensorManager(this)
         }
+    }
 
-
+    fun setupStepCounter() {
         val sharedPreferences = getSharedPreferences(this::class.simpleName, MODE_PRIVATE)
         val dataStore = SharedPreferencesDataStore(sharedPreferences)
         stepCounterService = StepCounterService(dataStore)
@@ -62,8 +85,7 @@ class MainActivity : AppCompatActivity() {
             setOf(
                 R.id.navigation_alpha,
                 R.id.navigation_beta,
-                R.id.navigation_gamma,
-                R.id.navigation_charlie
+                R.id.navigation_gamma
             )
         )
 
@@ -72,21 +94,19 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onResume() {
+        Log.i(TAG, ::onResume.name)
         super.onResume()
         stepSensorManager.onResume()
     }
 
     override fun onPause() {
+        Log.i(TAG, ::onPause.name)
         super.onPause()
         stepSensorManager.onPause()
     }
 
     fun updateSteps(newStepCount: Float) {
+        //Log.v(TAG, newStepCount.toString())
         stepCounterService.updateSteps(newStepCount)
-        Log.v(TAG, newStepCount.toString())
-    }
-
-    fun getStepCounterService(): StepCounterService {
-        return stepCounterService
     }
 }
