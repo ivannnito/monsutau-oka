@@ -65,6 +65,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        android:elevation="24dp"
+        android:translationZ="24dp"
         app:srcCompat="@drawable/stick" />
 
     <TextView
@@ -75,6 +77,8 @@
         android:layout_marginTop="13dp"
         android:layout_marginEnd="6dp"
         android:layout_marginBottom="699dp"
+        android:elevation="24dp"
+        android:translationZ="24dp"
         android:text= "@string/_0"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

@@ -1,40 +1,58 @@
 package edu.chapman.monsutauoka.viewmodel
-// No Step conversion yet
+
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import edu.chapman.monsutauoka.data.StickRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import edu.chapman.monsutauoka.model.TreatStore
+import kotlinx.coroutines.launch
 
-class MiniGameViewModel(private val treatStore: TreatStore) : ViewModel() {
+class MiniGameViewModel(
+    private val repo: StickRepository
+) : ViewModel() {
 
-    private val _dollars = MutableStateFlow(5) // Start with 5 dollars for testing
-    val dollars: StateFlow<Int> = _dollars
-
-    private val _slots = MutableStateFlow(listOf("🍒", "🍋", "🍊"))
-    val slots: StateFlow<List<String>> = _slots
+    companion object {
+        const val SPIN_COST = 1 // how many sticks a spin costs
+    }
 
     private val symbols = listOf("🍒", "🍋", "🍊", "⭐", "7️⃣")
 
+    // Slots shown on screen
+    private val _slots = MutableStateFlow(listOf("🍒", "🍋", "🍊"))
+    val slots: StateFlow<List<String>> = _slots
+
+    // Expose the global wallet (flow from the repo)
+    val sticksFlow = repo.balanceFlow
+
+    // Last spin result for UI (+ = profit after cost, 0 = breakeven, - = loss)
+    private val _lastPayout = MutableStateFlow(0)
+    val lastPayout: StateFlow<Int> = _lastPayout
+
+    /** Pay cost from repo; if successful, roll and grant winnings back to repo. */
     fun spinSlotMachine() {
-        if (_dollars.value < 1) return
-        _dollars.value--
+        viewModelScope.launch {
+            val paid = repo.spend(SPIN_COST)  // suspend, atomic in DataStore
+            if (!paid) {
+                _lastPayout.value = 0 // couldn't spin (insufficient sticks)
+                return@launch
+            }
 
-        val result = List(3) { symbols.random() }
-        _slots.value = result
+            val result = List(3) { symbols.random() }
+            _slots.value = result
 
-        val reward = calculateReward(result)
-        if (reward > 0) treatStore.addTreats(reward)
-    }
+            val reward = calculateReward(result)
+            if (reward > 0) repo.grant(reward)
 
-    private fun calculateReward(slot: List<String>): Int {
-        return when {
-            slot.toSet().size == 1 -> 5 // All 3 match
-            slot.distinct().size == 2 -> 2 // Two match
-            else -> 0
+            _lastPayout.value = reward - SPIN_COST
         }
     }
 
-    fun addFakeMoneyForDebugging(amount: Int = 5) {
-        _dollars.value += amount
+    private fun calculateReward(slot: List<String>): Int = when {
+        slot[0] == slot[1] && slot[1] == slot[2] -> 5 // three of a kind
+        slot[0] == slot[1] || slot[1] == slot[2] || slot[0] == slot[2] -> 2 // any pair
+        else -> 0
     }
+
+    // Optional debug helper
+    fun addDebugSticks(amount: Int = 5) = viewModelScope.launch { repo.grant(amount) }
 }

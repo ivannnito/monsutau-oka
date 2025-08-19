@@ -60,7 +60,7 @@ class MainActivity : AppCompatActivity() {
 
         val hello = intent?.getStringExtra("hello") ?: return
 
-        val index = if (hello == "world") R.id.navigation_gamma else R.id.navigation_beta
+        val index = if (hello == "world") R.id.navigation_alpha else R.id.navigation_beta
 
         binding.navView.selectedItemId = index
     }
@@ -100,7 +100,7 @@ class MainActivity : AppCompatActivity() {
             setOf(
                 R.id.navigation_alpha,
                 R.id.navigation_beta,
-                R.id.navigation_gamma
+                R.id.navigation_charlie
             )
         )
 

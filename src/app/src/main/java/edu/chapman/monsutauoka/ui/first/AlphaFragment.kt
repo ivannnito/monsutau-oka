@@ -50,6 +50,9 @@ class AlphaFragment : MainFragmentBase<FragmentAlphaBinding>() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        binding.imageViewStick.bringToFront()
+        binding.sticksAmount.bringToFront()
+        binding.root.invalidate()
         binding.root.applySystemBarPadding()
 
         // steps display (unchanged)
