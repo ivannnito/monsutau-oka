@@ -29,45 +29,45 @@ class MoodAndActivity(val dataStore: DataStore) {
     }
 
     private val sadImages = arrayOf(
-        R.drawable.ic_launcher_foreground, R.drawable.ic_launcher_foreground, R.drawable.ic_launcher_foreground,
-        R.drawable.ic_launcher_foreground, R.drawable.ic_launcher_foreground, R.drawable.ic_launcher_foreground,
-        R.drawable.ic_launcher_foreground
+        R.drawable.sleeping, R.drawable.sleeping, R.drawable.sleeping,
+        R.drawable.eating, R.drawable.saddrinking, R.drawable.eating,
+        R.drawable.saddrinking, R.drawable.sleeping, R.drawable.saddefault
     )
 
     private val madImages = arrayOf(
-        R.drawable.ic_launcher_foreground, R.drawable.ic_launcher_foreground, R.drawable.ic_launcher_foreground,
-        R.drawable.ic_launcher_foreground, R.drawable.ic_launcher_foreground, R.drawable.ic_launcher_foreground,
-        R.drawable.ic_launcher_foreground
+        R.drawable.sleeping, R.drawable.sleeping, R.drawable.eating,
+        R.drawable.tantrum, R.drawable.eating, R.drawable.tantrum,
+        R.drawable.sleeping, R.drawable.sleeping, R.drawable.maddefault
     )
 
     private val tickedOffImages = arrayOf(
-        R.drawable.ic_launcher_foreground, R.drawable.ic_launcher_foreground, R.drawable.ic_launcher_foreground,
-        R.drawable.ic_launcher_foreground, R.drawable.ic_launcher_foreground, R.drawable.ic_launcher_foreground,
-        R.drawable.ic_launcher_foreground
+        R.drawable.sleeping, R.drawable.gettingready, R.drawable.eating,
+        R.drawable.tantrum, R.drawable.eating, R.drawable.gettingready,
+        R.drawable.sleeping, R.drawable.sleeping, R.drawable.tickedoffdefault
     )
 
     private val neutralImages = arrayOf(
-        R.drawable.ic_launcher_foreground, R.drawable.ic_launcher_foreground, R.drawable.ic_launcher_foreground,
-        R.drawable.ic_launcher_foreground, R.drawable.ic_launcher_foreground, R.drawable.ic_launcher_foreground,
-        R.drawable.ic_launcher_foreground
+        R.drawable.gettingready, R.drawable.eating, R.drawable.eating,
+        R.drawable.neutraldefault, R.drawable.eating, R.drawable.gettingready,
+        R.drawable.sleeping, R.drawable.sleeping, R.drawable.neutraldefault
     )
 
     private val boredImages = arrayOf(
-        R.drawable.ic_dashboard_black_24dp, R.drawable.ic_launcher_foreground, R.drawable.ic_launcher_foreground,
-        R.drawable.ic_launcher_foreground, R.drawable.ic_launcher_foreground, R.drawable.ic_launcher_foreground,
-        R.drawable.ic_launcher_foreground
+        R.drawable.gettingready, R.drawable.eating, R.drawable.eating,
+        R.drawable.boreddefault, R.drawable.eating, R.drawable.gettingready,
+        R.drawable.sleeping, R.drawable.sleeping, R.drawable.boreddefault
     )
 
     private val surprisedImages = arrayOf(
-        R.drawable.ic_launcher_foreground, R.drawable.ic_launcher_foreground, R.drawable.ic_launcher_foreground,
-        R.drawable.ic_launcher_foreground, R.drawable.ic_launcher_foreground, R.drawable.ic_launcher_foreground,
-        R.drawable.ic_launcher_foreground
+        R.drawable.gettingready, R.drawable.eating, R.drawable.eating,
+        R.drawable.surpriseddefault, R.drawable.eating, R.drawable.gettingready,
+        R.drawable.sleeping, R.drawable.sleeping, R.drawable.surpriseddefault
     )
 
     private val happyImages = arrayOf(
-        R.drawable.ic_launcher_foreground, R.drawable.ic_launcher_foreground, R.drawable.ic_launcher_foreground,
-        R.drawable.ic_launcher_foreground, R.drawable.ic_launcher_foreground, R.drawable.ic_launcher_foreground,
-        R.drawable.ic_launcher_foreground
+        R.drawable.gettingready, R.drawable.eating, R.drawable.eating,
+        R.drawable.happydefault, R.drawable.eating, R.drawable.gettingready,
+        R.drawable.sleeping, R.drawable.sleeping, R.drawable.happydefault
     )
 
     private val moodTexts = arrayOf(
